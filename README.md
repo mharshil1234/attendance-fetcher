@@ -38,3 +38,13 @@ If the extension doesn't work after updating the code:
 
 1. Reload the extension in `chrome://extensions`
 2. Refresh the Google Meet tab
+
+## Updating
+
+To get the latest changes:
+
+```bash
+git pull
+```
+
+Then reload the extension from `chrome://extensions` and refresh your Google Meet tab.
