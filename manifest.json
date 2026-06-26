@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Meet Attendance",
+  "version": "1.0",
+  "permissions": ["activeTab", "downloads", "scripting"],
+  "host_permissions": ["https://meet.google.com/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
