@@ -7,7 +7,6 @@
 
 body {
     width: 320px;
-    min-height: 220px;
     background: linear-gradient(
         135deg,
         #0f172a,
@@ -17,19 +16,20 @@ body {
 }
 
 .container {
-    padding: 25px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 12px;
 }
 
 .header {
     text-align: center;
+    margin-bottom: 8px;
 }
 
 .header h1 {
     font-size: 22px;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .header p {
@@ -39,32 +39,40 @@ body {
 
 button {
     border: none;
-    outline: none;
     cursor: pointer;
-
-    padding: 14px;
-    border-radius: 12px;
-
-    font-size: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 600;
-
-    color: white;
-
-    background: linear-gradient(
-        135deg,
-        #3b82f6,
-        #2563eb
-    );
-
-    transition: all 0.2s ease;
+    transition: 0.2s;
 }
 
 button:hover {
     transform: translateY(-2px);
 }
 
-button:active {
-    transform: scale(0.98);
+.primary-btn {
+    background: #2563eb;
+    color: white;
+}
+
+.secondary-btn {
+    background: #334155;
+    color: white;
+}
+
+#status {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.success {
+    color: #22c55e;
+}
+
+.error {
+    color: #ef4444;
 }
 
 .footer {
@@ -72,5 +80,5 @@ button:active {
     font-size: 12px;
     color: #94a3b8;
     border-top: 1px solid rgba(255,255,255,0.1);
-    padding-top: 12px;
+    padding-top: 10px;
 }

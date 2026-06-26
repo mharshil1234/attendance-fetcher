@@ -1,39 +1,97 @@
-document
-    .getElementById("download")
-    .addEventListener("click", async () => {
+const status = document.getElementById("status");
 
-        const [tab] = await chrome.tabs.query({
-            active: true,
-            currentWindow: true
-        });
+function showStatus(message, isError = false) {
+    status.textContent = message;
+    status.className = isError ? "error" : "success";
 
+    setTimeout(() => {
+        status.textContent = "";
+        status.className = "";
+    }, 4000);
+}
+
+async function getParticipants() {
+    const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    });
+
+    return new Promise((resolve, reject) => {
         chrome.tabs.sendMessage(
             tab.id,
             { type: "GET_ATTENDANCE" },
             (participants) => {
 
-                if(!participants) {
-                    alert("Open Google Meet first");
+                if (chrome.runtime.lastError) {
+                    reject("Open a Google Meet first");
                     return;
                 }
 
-                let csv = "Attendance:\n\n";
+                if (!participants || participants.length === 0) {
+                    reject("No participants found");
+                    return;
+                }
 
-                participants.forEach(name => {
-                    csv += `${name}\n`;
-                });
-
-                const blob = new Blob(
-                    [csv],
-                    { type: "text/csv" }
-                );
-
-                const url = URL.createObjectURL(blob);
-
-                chrome.downloads.download({
-                    url,
-                    filename: "attendance.csv"
-                });
+                resolve(participants);
             }
         );
+    });
+}
+
+document
+    .getElementById("download")
+    .addEventListener("click", async () => {
+
+        try {
+            const participants = await getParticipants();
+
+            let content =
+                `Attendance Report\nGenerated: ${new Date().toLocaleString()}\n---------------------------------\n\n`;
+
+            participants.forEach(name => {
+                content += `${name}\n`;
+            });
+
+            const blob = new Blob(
+                [content],
+                { type: "text/plain" }
+            );
+
+            const url = URL.createObjectURL(blob);
+
+            chrome.downloads.download(
+                {
+                    url,
+                    filename: `attendance-${Date.now()}.txt`
+                },
+                () => URL.revokeObjectURL(url)
+            );
+
+            showStatus(
+                `Exported ${participants.length} participants`
+            );
+
+        } catch (err) {
+            showStatus(`${err}`, true);
+        }
+    });
+
+document
+    .getElementById("copy")
+    .addEventListener("click", async () => {
+
+        try {
+            const participants = await getParticipants();
+
+            await navigator.clipboard.writeText(
+                participants.join("\n")
+            );
+
+            showStatus(
+                `Copied ${participants.length} names`
+            );
+
+        } catch (err) {
+            showStatus(`${err}`, true);
+        }
     });
