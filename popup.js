@@ -17,10 +17,10 @@ document
                     return;
                 }
 
-                let csv = "Name\n";
+                let csv = "Attendance:\n\n";
 
                 participants.forEach(name => {
-                    csv += `"${name}"\n`;
+                    csv += `${name}\n`;
                 });
 
                 const blob = new Blob(
