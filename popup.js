@@ -62,7 +62,7 @@ document
             chrome.downloads.download(
                 {
                     url,
-                    filename: `attendance-${Date.now()}.txt`
+                    filename: `attendance-${(new Date()).toLocaleDateString('en-CA')}.txt`
                 },
                 () => URL.revokeObjectURL(url)
             );
